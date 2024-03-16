@@ -30,7 +30,6 @@ const EntryScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleReject = (visitorId: number) => {
     console.log('Rejecting visitor with ID:', visitorId);
-    setVisitors(prevVisitors => prevVisitors.filter(visitor => visitor.id !== visitorId));
     setSelectedVisitorId(visitorId);
     setModalVisible(true);
   };
@@ -40,10 +39,15 @@ const EntryScreen: React.FC<Props> = ({ navigation }) => {
       Alert.alert('Error ⚠️', 'Please provide a reason for rejection');
     } else {
       console.log('Rejection Reason:', rejectReason);
+      setVisitors(prevVisitors => prevVisitors.filter(visitor => visitor.id !== selectedVisitorId));
       setModalVisible(false);
       setSelectedVisitorId(null);
       setRejectReason('');
     }
+  };
+
+  const handleCancelButton = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -77,7 +81,7 @@ const EntryScreen: React.FC<Props> = ({ navigation }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        // onRequestClose={() => setModalVisible(false)}
+        onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -89,9 +93,14 @@ const EntryScreen: React.FC<Props> = ({ navigation }) => {
               value={rejectReason}
               multiline={true}
             />
-            <TouchableOpacity style={styles.submitButton} onPress={handleSubmitReason}>
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
+            <View>
+              <TouchableOpacity style={styles.submitButton} onPress={handleSubmitReason}>
+                <Text style={styles.buttonText}>Submit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.submitButton} onPress={handleCancelButton}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -216,6 +225,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
+    marginBottom: 10,
   },
 });
 

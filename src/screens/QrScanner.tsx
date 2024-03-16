@@ -9,8 +9,10 @@ interface Props {
 
 const QrScanner: React.FC<Props> = ({ navigation }) => {
   const onBarcodeScanned = (event: any) => {
+    const scannedTime = new Date().toLocaleString(); // Capture the current time when QR code is scanned
     if (event.data) {
-      Alert.alert('Barcode Scanned', event.data);
+      // Alert.alert('Barcode Scanned', event.data);
+      Alert.alert('Barcode Scanned', `Data: ${event.data}\nScanned Time: ${scannedTime}`);
     } else {
       Alert.alert('Error', 'Failed to read barcode.');
     }
@@ -24,7 +26,7 @@ const QrScanner: React.FC<Props> = ({ navigation }) => {
       reactivateTimeout={5000}
       bottomContent={
         <Button
-          title='EntryScreen'
+          title='Entry Screen'
           onPress={() => navigation.navigate('EntryScreen')}
         />
       }
